@@ -77,6 +77,23 @@
             var operator = Math.random() < 0.5 ? '+' : '-';
             return number1 + " " + operator + " " + number2;
         }
+        // Function to check if the user's answer is correct
+        function checkAnswer() {
+            var userAnswer = document.getElementById('user-input').value;
+            var equationText = document.getElementById('equation-text').innerText;
+            var numbers = equationText.split(/\s+/).map(num => parseInt(num.trim()));
+            var operator = equationText.match(/[+\-]/);
+
+            var expectedAnswer = operator[0] === '+' ? numbers[0] + numbers[2] : numbers[0] - numbers[2];
+
+            if (userAnswer == expectedAnswer) {
+                alert('You are proven human! Redirecting to example.com.');
+                window.location.href = 'https://example.com';
+            } else {
+                alert('Incorrect answer. Please try again.');
+                resetCaptcha();
+            }
+        }
 
     </script>
 </body>

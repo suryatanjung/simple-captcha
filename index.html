@@ -100,7 +100,13 @@
             equationTextElement.innerText = generateEquation();
             document.getElementById('user-input').value = '';
         }
+        // Function to validate user input based on the specified rules
+        function validateInput() {
+            var userInput = document.getElementById('user-input');
+            var currentValue = userInput.value;
 
+            // Allow only numbers and "-"
+            currentValue = currentValue.replace(/[^0-9-]/g, '');
     </script>
 </body>
 </html>

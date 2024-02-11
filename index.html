@@ -94,6 +94,12 @@
                 resetCaptcha();
             }
         }
+        // Function to reset the captcha with a new equation
+        function resetCaptcha() {
+            var equationTextElement = document.getElementById('equation-text');
+            equationTextElement.innerText = generateEquation();
+            document.getElementById('user-input').value = '';
+        }
 
     </script>
 </body>

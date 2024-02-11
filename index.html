@@ -77,6 +77,7 @@
             var operator = Math.random() < 0.5 ? '+' : '-';
             return number1 + " " + operator + " " + number2;
         }
+
         // Function to check if the user's answer is correct
         function checkAnswer() {
             var userAnswer = document.getElementById('user-input').value;
@@ -94,12 +95,14 @@
                 resetCaptcha();
             }
         }
+
         // Function to reset the captcha with a new equation
         function resetCaptcha() {
             var equationTextElement = document.getElementById('equation-text');
             equationTextElement.innerText = generateEquation();
             document.getElementById('user-input').value = '';
         }
+
         // Function to validate user input based on the specified rules
         function validateInput() {
             var userInput = document.getElementById('user-input');
@@ -107,6 +110,39 @@
 
             // Allow only numbers and "-"
             currentValue = currentValue.replace(/[^0-9-]/g, '');
+
+            // Rule: Prevent consecutive "-"
+            currentValue = currentValue.replace(/--/g, '-');
+
+            // Rule: Prevent "-" followed by "0"
+            currentValue = currentValue.replace(/-\b0\b/g, '-');
+
+            // Rule: "0" cannot be followed by anything
+            currentValue = currentValue.replace(/0./g, '0');
+
+            // Rule: "0-9" cannot be followed by "-"
+            currentValue = currentValue.replace(/\d-/g, function(match) {
+                return match[0];
+            });
+
+            // Rule: "1-9" only can be followed by a single-digit number "0-9"
+            currentValue = currentValue.replace(/[1-9](?=\D|$)/g, function(match) {
+                return match[0];
+            });
+
+            // Rule: Once there are already 2 digits, it cannot be followed by anything else
+            currentValue = currentValue.replace(/^\D{2}\D*/g, function(match) {
+                return match[0] + match[1];
+            });
+
+            // Rule: If no "-", make the field only max 2 digits
+            currentValue = currentValue.replace(/\d{3}/g, function(match) {
+                return match[0] + match[1];
+            });
+
+            userInput.value = currentValue;
+        }
+
     </script>
 </body>
 </html>

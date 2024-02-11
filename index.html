@@ -143,6 +143,11 @@
             userInput.value = currentValue;
         }
 
+        // Initialize the captcha on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            var equationTextElement = document.getElementById('equation-text');
+            equationTextElement.innerText = generateEquation();
+        });
     </script>
 </body>
 </html>

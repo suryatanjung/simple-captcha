@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, follow">
+    <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <title>Simple Captcha Demo</title>
+    <style>
+        body {
+            font-family: arial, sans-serif;
+            background-color: #fff;
+            color: #000;
+            padding:20px;
+            font-size:18px;
+            overscroll-behavior:contain;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+            margin:0;
+        }
+
+        #captcha-container {
+            max-width:400px;
+            border:1px solid #ddd;
+            padding:15px;
+            border-radius:8px;
+            box-shadow:0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #equation {
+            margin-bottom:20px;
+            font-size:16px;
+            font-weight:bold;
+        }
+
+        #answer {
+            margin-bottom:10px;
+            font-size:16px;
+        }
+
+        #user-input {
+            padding:10px;
+            font-size:16px;
+        }
+
+        #submit-button {
+            padding:10px;
+            font-size:16px;
+            cursor:pointer;
+            background-color:#4CAF50;
+            color:white;
+            border:none;
+            border-radius:4px;
+        }
+    </style>
+</head>
+<body>
+    <div id="captcha-container">
+        <div id="equation">
+            Solve the equation: <strong id="equation-text"></strong> = ?
+        </div>
+        <div id="answer">
+            Your answer: <input type="text" id="user-input" maxlength="3" oninput="validateInput()" onkeydown="if(event.keyCode==13) checkAnswer()">
+        </div>
+        <button id="submit-button" onclick="checkAnswer()">Submit</button>
+    </div>
+
+    <script>
+        // Function to generate a random simple equation with numbers in the range of 1-9
+        function generateEquation() {
+            var number1 = Math.floor(Math.random() * 9) + 1;
+            var number2 = Math.floor(Math.random() * 9) + 1;
+            var operator = Math.random() < 0.5 ? '+' : '-';
+            return number1 + " " + operator + " " + number2;
+        }
+
+        // Function to check if the user's answer is correct
+        function checkAnswer() {
+            var userAnswer = document.getElementById('user-input').value;
+            var equationText = document.getElementById('equation-text').innerText;
+            var numbers = equationText.split(/\s+/).map(num => parseInt(num.trim()));
+            var operator = equationText.match(/[+\-]/);
+
+            var expectedAnswer = operator[0] === '+' ? numbers[0] + numbers[2] : numbers[0] - numbers[2];
+
+            if (userAnswer == expectedAnswer) {
+                alert('You are proven human! Redirecting to example.com.');
+                window.location.href = 'https://example.com';
+            } else {
+                alert('Incorrect answer. Please try again.');
+                resetCaptcha();
+            }
+        }
+
+        // Function to reset the captcha with a new equation
+        function resetCaptcha() {
+            var equationTextElement = document.getElementById('equation-text');
+            equationTextElement.innerText = generateEquation();
+            document.getElementById('user-input').value = '';
+        }
+
+        // Function to validate user input based on the specified rules
+        function validateInput() {
+            var userInput = document.getElementById('user-input');
+            var currentValue = userInput.value;
+
+            // Allow only numbers and "-"
+            currentValue = currentValue.replace(/[^0-9-]/g, '');
+
+            // Rule: Prevent consecutive "-"
+            currentValue = currentValue.replace(/--/g, '-');
+
+            // Rule: Prevent "-" followed by "0"
+            currentValue = currentValue.replace(/-\b0\b/g, '-');
+
+            // Rule: "0" cannot be followed by anything
+            currentValue = currentValue.replace(/0./g, '0');
+
+            // Rule: "0-9" cannot be followed by "-"
+            currentValue = currentValue.replace(/\d-/g, function(match) {
+                return match[0];
+            });
+
+            // Rule: "1-9" only can be followed by a single-digit number "0-9"
+            currentValue = currentValue.replace(/[1-9](?=\D|$)/g, function(match) {
+                return match[0];
+            });
+
+            // Rule: Once there are already 2 digits, it cannot be followed by anything else
+            currentValue = currentValue.replace(/^\D{2}\D*/g, function(match) {
+                return match[0] + match[1];
+            });
+
+            // Rule: If no "-", make the field only max 2 digits
+            currentValue = currentValue.replace(/\d{3}/g, function(match) {
+                return match[0] + match[1];
+            });
+
+            userInput.value = currentValue;
+        }
+
+        // Initialize the captcha on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            var equationTextElement = document.getElementById('equation-text');
+            equationTextElement.innerText = generateEquation();
+        });
+    </script>
+</body>
+</html>

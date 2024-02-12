@@ -13,48 +13,49 @@
             font-family: arial, sans-serif;
             background-color: #fff;
             color: #000;
-            padding:20px;
-            font-size:18px;
-            overscroll-behavior:contain;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
-            margin:0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
         }
 
         #captcha-container {
-            max-width:400px;
-            border:1px solid #ddd;
-            padding:15px;
-            border-radius:8px;
-            box-shadow:0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         #equation {
-            margin-bottom:20px;
-            font-size:16px;
-            font-weight:bold;
+            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: bold;
         }
 
         #answer {
-            margin-bottom:10px;
-            font-size:16px;
+            margin-bottom: 10px;
+            font-size: 16px;
         }
 
         #user-input {
-            padding:10px;
-            font-size:16px;
+            padding: 10px;
+            font-size: 16px;
+            width: calc(100% - 20px);
         }
 
         #submit-button {
-            padding:10px;
-            font-size:16px;
-            cursor:pointer;
-            background-color:#4CAF50;
-            color:white;
-            border:none;
-            border-radius:4px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            width: 100%;
         }
     </style>
 </head>
